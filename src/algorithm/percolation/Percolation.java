@@ -26,40 +26,53 @@ public class Percolation {
             gridState[row * size + col] = 1;
             nbOfOpenSite++;
 
-            if(row == 0) {
-                if(col!=0) {
-                    if (isOpen(row + 1, col) && isFull(row + 1, col))
-                        ids.union((row + 1) * size + col, id);
-                    if (isOpen(row - 1, col) && isFull(row - 1, col))
-                        ids.union((row - 1) * size + col, id);
-                    if (isOpen(row, col - 1) && isFull(row, col - 1))
-                        ids.union(row * size + col - 1, id);
-                }
-                else {
-                    if (isOpen(row, col+1) && isFull(row, col + 1))
-                        ids.union(col + 1, id);
-                    if (isOpen(row+1, col - 1) && isFull(row, col - 1))
-                        ids.union(row * size + col - 1, id);
-                }
-            }
-            else if () {
 
+            if(isOnBorders(row,col)) {
+                if(isOnFirstOrLastRow(row))
+                    unionOnFirstOrLastRow(row, col, id);
+                if(isOnFirstOrLastColumn(col))
+                    unionOnFirstOrLastColumn(row, col, id);
+            }
+            else {
+                unionNotOnBordersCells(row, col, id);
             }
 
-            if (isOpen(row + 1, col) && isFull(row + 1, col))
-                ids.union((row + 1) * size + col, id);
-            if (isOpen(row - 1, col) && isFull(row - 1, col))
-                ids.union((row - 1) * size + col, id);
-            if (isOpen(row, col + 1) && isFull(row, col + 1))
-                ids.union(row * size + col + 1, id);
-            if (isOpen(row, col - 1) && isFull(row, col - 1))
-                ids.union(row * size + col - 1, id);
         }
+    }
+
+    private void unionOnFirstOrLastColumn(int row, int col, int id) {
+    }
+
+    private void unionOnFirstOrLastRow(int row, int col, int id) {
+
+    }
+
+    private boolean isOnFirstOrLastColumn(int col) {
+        return col == 0 || col == size-1;
+    }
+
+    private boolean isOnFirstOrLastRow(int row) {
+        return row == 0 || row == size-1;
+    }
+
+    private boolean isOnBorders(int row, int col) {
+        return row == 0 || col == 0 || row == size - 1 || col == size - 1;
+    }
+
+    private void unionNotOnBordersCells(int row, int col, int id) {
+        if (isOpen(row + 1, col) && isFull(row + 1, col))
+            ids.union((row + 1) * size + col, id);
+        if (isOpen(row - 1, col) && isFull(row - 1, col))
+            ids.union((row - 1) * size + col, id);
+        if (isOpen(row, col + 1) && isFull(row, col + 1))
+            ids.union(row * size + col + 1, id);
+        if (isOpen(row, col - 1) && isFull(row, col - 1))
+            ids.union(row * size + col - 1, id);
     }
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        if (row <1 || row > size || col <1|| col > size)
+        if (row <0 || row > size || col <0|| col > size)
             throw new IllegalArgumentException("incorrect site coordinates : " + row + " " + col);
         int id = row * size + col;
         return gridState[id] == 1;

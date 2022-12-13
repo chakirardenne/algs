@@ -4,8 +4,6 @@ import algorithm.percolation.Percolation;
 import algorithm.unionfind.QuickUnionUF;
 import edu.princeton.cs.algs4.StdRandom;
 
-import java.security.SecureRandom;
-
 public class Main {
     public static void main(String[] args) {
 //      quickUnionFind();
@@ -23,10 +21,12 @@ public class Main {
     }
 
     private static void percolation() {
-        Percolation percolation = new Percolation(5);
+        Percolation percolation = new Percolation(3);
         while(!percolation.percolates()) {
-            percolation.open(StdRandom.uniformInt(5), StdRandom.uniformInt(5));
-            System.out.println(percolation.numberOfOpenSites());
+            int row = StdRandom.uniformInt(3);
+            int col = StdRandom.uniformInt(3);
+            percolation.open(row, col);
+            System.out.printf("%d %d %d%n", row, col, percolation.numberOfOpenSites());
         }
     }
 }
